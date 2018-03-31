@@ -1,4 +1,5 @@
 let allCars = [];
+let selectedCars = [];
 
 /*
  * Generates rows depending on cars number 
@@ -37,7 +38,6 @@ const loadJSON = _ => {
     response.json()
     .then(data => {
       allCars = data.cars;
-      console.log(allCars);
       const carsNumber = data.cars.length;
       generateRow(carsNumber);
       generateCar(carsNumber, data.cars);   
@@ -58,4 +58,23 @@ $(document).on("mouseenter",".flipcard",function() {
   } else { 
     $flipcard.addClass('flipped');
   }
+})
+
+/*
+ * Event that adds selected car to the list for racing
+ */
+$(document).on("click",".flipcard",function() {
+  const wholeId = this.id;
+  const id = wholeId.substring(3);
+  const selectedCar = allCars.filter(car => car.id == id);
+
+  const foundCar = selectedCars.filter(car => car.id == id);
+  if (foundCar.length == 0) {
+    selectedCars.push(selectedCar[0]);
+    $(this).addClass("clicked");
+  } else {
+    selectedCars = selectedCars.filter(car => car.id != id);
+    $(this).removeClass("clicked");
+  }
+  console.log(selectedCars);
 })
