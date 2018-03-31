@@ -5,9 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HTEC CAR RACE</title>
+
+     <!-- Loading styles -->
+     <link href="css/style.css" rel="stylesheet">
+     <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+      <!-- Loading libraries -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/mustache/mustache.min.js"></script>
   </head>
   <body>
-    <h1>HTEC CAR RACE</h1>
-    <script src="bundle.js"></script>
+    <div id="route-view"></div>
+
+    <script src="bundle.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $.get('/templates/index.html', function(template, textStatus, jqXhr) {
+        $('#route-view').html(Mustache.render($(template).filter('#index').html()))
+      });
+    </script>
   </body>
 </html>
