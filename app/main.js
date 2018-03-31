@@ -29,6 +29,19 @@ const generateCar = (carsNumber, cars) => {
     });
   }
 }
+
+/*
+ * Generates empty lines on road
+ */
+const generateRoadLine = (carsNumber) => {
+  $('#lanes').empty();
+  for(let i = 0; i < carsNumber; i++) {
+    $.get('../templates/lane.html', (template, textStatus, jqXhr) => {
+      $('#lanes').append(Mustache.render($(template).filter('#lane').html()))
+    });    
+  }
+}
+
 /*
  * Loads data from API
  * Generates content 
@@ -44,6 +57,25 @@ const loadJSON = _ => {
       generateCar(carsNumber, data.cars);   
       
       distance = data.distance;
+      // Generates road for race
+      distance = data.distance;
+      const distancePart = distance / 10;
+      const roadHeader = {
+        first :  Math.round((distancePart) * 100) / 100,
+        second : Math.round((distancePart * 2) * 100) / 100,
+        third : Math.round((distancePart * 3) * 100) / 100,
+        fourth : Math.round((distancePart * 4) * 100) / 100,
+        fifth : Math.round((distancePart * 5) * 100) / 100,
+        sixth : Math.round((distancePart * 6) * 100) / 100,
+        seventh : Math.round((distancePart * 7) * 100) / 100,
+        eighth : Math.round((distancePart * 8) * 100) / 100,
+        ninth : Math.round((distancePart * 9) * 100) / 100,
+      }
+      $.get('../templates/road-header.html', (template, textStatus, jqXhr) => {
+        $('#road-header').append(Mustache.render($(template).filter('#road-header').html(), roadHeader))
+      });
+
+      generateRoadLine(allCars.length);
     })
   })
   .catch(error => {throw new Error(error)})
