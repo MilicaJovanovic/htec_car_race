@@ -1,5 +1,6 @@
 let allCars = [];
 let selectedCars = [];
+let distance = 0;
 
 /*
  * Generates rows depending on cars number 
@@ -41,6 +42,8 @@ const loadJSON = _ => {
       const carsNumber = data.cars.length;
       generateRow(carsNumber);
       generateCar(carsNumber, data.cars);   
+      
+      distance = data.distance;
     })
   })
   .catch(error => {throw new Error(error)})
