@@ -4,7 +4,7 @@ body {
 h1 {
   color: #2BAD6F !important;
 }
-.mycontainer {
+.container {
   text-align: center;
   margin-top: 20px;
   width: 80%;
@@ -54,4 +54,46 @@ h1 {
   margin: 0px;
   padding-left: 20px;
   padding-right: 20px;
+}
+.flipcard {
+  perspective: 800;
+  -moz-perspective: 800;
+  -webkit-perspective: 800;
+  transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: 0.8s;
+  -moz-transition: 0.8s;
+  -webkit-transition: 0.8s;
+}
+.flipcard.flipped {
+  transform: rotateX(180deg);
+  -moz-transform: rotateX(180deg);
+  -webkit-transform: rotateX(180deg);
+}
+.flipcard .face {
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flipcard .front {
+  display: block;
+}
+.flipcard.flipped .front {
+  display:none;
+}
+.flipcard .back {
+  -webkit-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+  -moz-transform: rotateX(180deg);
+  display: none;
+  margin-top: 20px;
+}
+.flipcard.flipped .back {
+  display: block;
+}
+.dark-car-image {
+  z-index: -1;
+  position: absolute;
+  filter: brightness(30%);
 }

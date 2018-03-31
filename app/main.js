@@ -47,3 +47,15 @@ const loadJSON = _ => {
 }
 
 loadJSON()
+
+/*
+ * Event that handles flipcard rotation
+ */
+$(document).on("mouseenter",".flipcard",function() {
+  var $flipcard = $(this); 
+  if ($flipcard.hasClass('flipped')) {
+     $flipcard.removeClass('flipped');
+  } else { 
+    $flipcard.addClass('flipped');
+  }
+})
