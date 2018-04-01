@@ -167,4 +167,34 @@ $(document).on("click",".flipcard",function() {
     lights.height = height;
   });
   generateTrafficLights(trafficLights, distance);
+
+  startTrafficListener();
 })
+
+/**
+ * Chagnes traffic light image based on class name.
+ * @param {*} trafficLight - specific traffic light
+ */
+const generateTrafficLight = (trafficLight) => {
+  if(trafficLight.hasClass("red-light")) {
+    (trafficLight).removeClass("red-light");
+    $(trafficLight).addClass("green-light");
+  } else {
+    (trafficLight).removeClass("green-light");
+    $(trafficLight).addClass("red-light");
+  }
+}
+
+/**
+ * Starts an interval checking all traffic lights at
+ * their exact duration. Calls function for checking
+ * traffic light colors.
+ */
+const startTrafficListener = () => {
+  trafficLights.forEach(light => {
+    setInterval(() => {
+      const uiLight = $('#light' + light.position);
+      generateTrafficLight(uiLight);
+    }, light.duration);
+  });
+}

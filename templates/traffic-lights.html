@@ -1,13 +1,9 @@
 <script id="traffic-lights" type="x-tmpl-mustache">
-  <div class="traffic-lights-sign">
+  <div class="traffic-sign">
     <div id="traffic-lights" style="margin-left: {{pos}}%">
-      <div class="vertical-line-lights" style="height: {{height}}px;"></div>
-      <div class="traffic-lights-rect">
-          <img src='images/red.png' alt="Red traffic light" id="red-light" />
-          <img src='images/green.png' alt="Green traffic light" id="green-light" />
-      </div>
+        <div class="vertical-line-lights" style="height: {{height}}px;"></div>
+        <div class="traffic-lights-rect red-light" id="light{{position}}"></div>
     </div>
   </div>
 </script>
-    
   

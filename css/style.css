@@ -204,34 +204,29 @@ h1 {
   color: white;
   display: block;
 }
-.traffic-lights-sign {
-  width: 100%;
-  float: left;
-  position: absolute;
-  z-index: 10;
-}
 .traffic-lights {
   position: relative;
-  width: 10%;
+  width: 100%;
   float: left;
 }
 .vertical-line-lights {
   border-left: 8px dashed #A4A4A4;
-  margin-left: 6%;
+  margin-left: 26px;
+  margin-bottom: 5px;
 }
 .traffic-lights-rect {
-  width: 10%;
+  width: 20%;
   height: 120px;
 }
-#red-light {
-  width: 140%;
-  height: 120px;
-  border-radius: 50%;
+.red-light {
+  background-image: url('../images/red.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: -10px;
 }
-#green-light {
-  width: 140%;
-  height: 30px;
-  height: 120px;
-  border-radius: 50%;
-  display: none;
+.green-light {
+  background-image: url('../images/green.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: -10px;
 }
