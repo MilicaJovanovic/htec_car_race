@@ -2,6 +2,7 @@ let allCars = [];
 let selectedCars = [];
 let distance = 0;
 let speedLimits = [];
+let trafficLights = [];
 
 /*
  * Generates rows depending on cars number 
@@ -70,6 +71,19 @@ const generateSpeedLimitSign = (speedLimits, distance) => {
 }
 
 /*
+ * Generates traffic lights
+ */
+const generateTrafficLights = (trafficLights, distance) => {
+  for (let i = 0; i < trafficLights.length; i++) {
+    let lightsPostion = (trafficLights[i].position * 100) / distance;
+    trafficLights[i].pos = lightsPostion - 2;
+    $.get('../templates/traffic-lights.html', (template, textStatus, jqXhr) => {
+      $('#signs').append(Mustache.render($(template).filter('#traffic-lights').html(), trafficLights[i]))
+    });
+  }
+}
+
+/*
  * Loads data from API
  * Generates content 
  */
@@ -102,6 +116,7 @@ const loadJSON = _ => {
       });
 
       speedLimits = data.speed_limits;
+      trafficLights = data.traffic_lights;
     })
   })
   .catch(error => {throw new Error(error)})
@@ -146,6 +161,10 @@ $(document).on("click",".flipcard",function() {
   speedLimits.forEach(limit => {
     limit.height = height;
   });
-
   generateSpeedLimitSign(speedLimits, distance);
+
+  trafficLights.forEach(lights => {
+    lights.height = height;
+  });
+  generateTrafficLights(trafficLights, distance);
 })
