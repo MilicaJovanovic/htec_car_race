@@ -43,6 +43,18 @@ const generateRoadLine = (carsNumber) => {
 }
 
 /*
+ * Generates race cars on the start of the road
+ */
+const generateRaceCar = (cars) => {
+  $('#race-cars').empty();
+  for(let i = 0; i < cars.length; i++) {
+    $.get('../templates/race-car.html', (template, textStatus, jqXhr) => {
+      $('#race-cars').append(Mustache.render($(template).filter('#race-car').html(), cars[i]))
+    });
+  }
+}
+
+/*
  * Loads data from API
  * Generates content 
  */
@@ -56,7 +68,6 @@ const loadJSON = _ => {
       generateRow(carsNumber);
       generateCar(carsNumber, data.cars);   
       
-      distance = data.distance;
       // Generates road for race
       distance = data.distance;
       const distancePart = distance / 10;
@@ -74,8 +85,6 @@ const loadJSON = _ => {
       $.get('../templates/road-header.html', (template, textStatus, jqXhr) => {
         $('#road-header').append(Mustache.render($(template).filter('#road-header').html(), roadHeader))
       });
-
-      generateRoadLine(allCars.length);
     })
   })
   .catch(error => {throw new Error(error)})
@@ -106,10 +115,13 @@ $(document).on("click",".flipcard",function() {
   const foundCar = selectedCars.filter(car => car.id == id);
   if (foundCar.length == 0) {
     selectedCars.push(selectedCar[0]);
-    $(this).addClass("clicked");
+    $(this).addClass("clicked");  
+    generateRoadLine(selectedCars.length);
+    generateRaceCar(selectedCars);
   } else {
     selectedCars = selectedCars.filter(car => car.id != id);
     $(this).removeClass("clicked");
+    generateRoadLine(selectedCars.length);
+    generateRaceCar(selectedCars);
   }
-  console.log(selectedCars);
 })
