@@ -1,6 +1,7 @@
 let allCars = [];
 let selectedCars = [];
 let distance = 0;
+let speedLimits = [];
 
 /*
  * Generates rows depending on cars number 
@@ -55,6 +56,20 @@ const generateRaceCar = (cars) => {
 }
 
 /*
+ * Generates speed limit sign
+ */
+const generateSpeedLimitSign = (speedLimits, distance) => {
+  $("#signs").html("");
+  for (let i = 0; i < speedLimits.length; i++) {
+    let signPostion = (speedLimits[i].position * 100) / distance;
+    speedLimits[i].pos = signPostion - 5.5;
+    $.get('../templates/speed-limit-sign.html', (template, textStatus, jqXhr) => {
+      $('#signs').append(Mustache.render($(template).filter('#speed-limit-sign').html(), speedLimits[i]))
+    });
+  }
+}
+
+/*
  * Loads data from API
  * Generates content 
  */
@@ -85,6 +100,8 @@ const loadJSON = _ => {
       $.get('../templates/road-header.html', (template, textStatus, jqXhr) => {
         $('#road-header').append(Mustache.render($(template).filter('#road-header').html(), roadHeader))
       });
+
+      speedLimits = data.speed_limits;
     })
   })
   .catch(error => {throw new Error(error)})
@@ -124,4 +141,11 @@ $(document).on("click",".flipcard",function() {
     generateRoadLine(selectedCars.length);
     generateRaceCar(selectedCars);
   }
+
+  const height = 60 * selectedCars.length + 10;
+  speedLimits.forEach(limit => {
+    limit.height = height;
+  });
+
+  generateSpeedLimitSign(speedLimits, distance);
 })
