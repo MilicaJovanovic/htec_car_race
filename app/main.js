@@ -204,6 +204,12 @@ const startTrafficListener = () => {
  */
 $(document).on("click","#start",function() {
   console.log("Race start");  
+  selectedCars.forEach(car => {
+    $('#race-car' + car.id).css({
+      'float': 'right',
+      'margin-right' : '20px'
+    });
+  });
 });
 
 /**
