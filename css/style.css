@@ -277,3 +277,16 @@ input:focus{
   text-align: center !important;
   color:	#cd7f32  !important;
 }
+@keyframes move-car {
+  0% { 
+    left: 0px; 
+    top: 0px; 
+    -webkit-transform: rotate(0deg)
+  }
+  100% { 
+    left: 100%; 
+    top: 0px; 
+    margin-left: -8%; 
+    -webkit-transform: rotate(0deg)
+  }
+}

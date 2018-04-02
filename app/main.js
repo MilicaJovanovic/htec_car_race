@@ -206,28 +206,41 @@ const startTrafficListener = () => {
  * 
  */
 $(document).on("click","#start",function() {
+  const animationSpeed = $("#animation-speed").val();
+
+  let slowestCar = 0;
   selectedCars.forEach(car => {
+    const carTimeForDistance = calculateTimeForDistance(car.speed, distance);
+    if (carTimeForDistance > slowestCar) {
+      slowestCar = carTimeForDistance;
+    }
+  });
+
+  selectedCars.forEach(car => {
+    const calculatedAnimationTime = calculateCarAnimationTime(slowestCar, calculateTimeForDistance(car.speed, distance), animationSpeed);
+
     $('#race-car' + car.id).css({
-      'float': 'right',
-      'margin-right' : '20px'
+      '-webklit-animation': 'move-car ' + calculatedAnimationTime + 's forwards',
+      'animation': 'move-car ' + calculatedAnimationTime + 's forwards',
+      '-webkit-animation-timing-function': 'linear',
     });
   });
 
-  selectedCars.sort(compareSpeed);
-  try {
-    $('#race-car' + selectedCars[selectedCars.length - 1].id).append("<h4>I</h4>");
-    $('#race-car' + selectedCars[selectedCars.length - 1].id).addClass('first-place');
-    $('#race-car' + selectedCars[selectedCars.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
+  // selectedCars.sort(compareSpeed);
+  // try {
+  //   $('#race-car' + selectedCars[selectedCars.length - 1].id).append("<h4>I</h4>");
+  //   $('#race-car' + selectedCars[selectedCars.length - 1].id).addClass('first-place');
+  //   $('#race-car' + selectedCars[selectedCars.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
 
-    $('#race-car' + selectedCars[selectedCars.length - 2].id).append("<h4>II</h4>");
-    $('#race-car' + selectedCars[selectedCars.length - 2].id).addClass('second-place');
-    $('#race-car' + selectedCars[selectedCars.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
+  //   $('#race-car' + selectedCars[selectedCars.length - 2].id).append("<h4>II</h4>");
+  //   $('#race-car' + selectedCars[selectedCars.length - 2].id).addClass('second-place');
+  //   $('#race-car' + selectedCars[selectedCars.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
 
-    $('#race-car' + selectedCars[selectedCars.length - 3].id).append("<h4>III</h4>");
-    $('#race-car' + selectedCars[selectedCars.length - 3].id).addClass('third-place');
-    $('#race-car' + selectedCars[selectedCars.length - 3].id + " .race-car-image").addClass('race-car-image-dark');
-  }
-  catch(err) {}
+  //   $('#race-car' + selectedCars[selectedCars.length - 3].id).append("<h4>III</h4>");
+  //   $('#race-car' + selectedCars[selectedCars.length - 3].id).addClass('third-place');
+  //   $('#race-car' + selectedCars[selectedCars.length - 3].id + " .race-car-image").addClass('race-car-image-dark');
+  // }
+  // catch(err) { throw new Error(err)}
 });
 
 /**
@@ -254,3 +267,32 @@ $(document).ready(function(){
       $('#start').prop('disabled', this.value == "" ? true : false);     
   })
 });
+
+
+
+/**
+ * Calculates how many minutes does a car need to pass the
+ * distance acquired from JSON, depending on car speed.
+ * @param {*} carSpeed - speed of the car
+ * @param {*} distance - distance that the car needs to cover
+ */
+const calculateTimeForDistance = (carSpeed, distance) => {
+  const requiredTime = (60 * distance) / carSpeed;
+  return requiredTime;
+}
+
+/**
+ * Calculates how many seconds does the animation run for
+ * a specific car, comparing it to the slowest car which needs
+ * to be animated for the time that user entered for animation
+ * time.
+ * @param {*} slowestCar - time needed for the slowest car to pass
+ * the distance required
+ * @param {*} carTimeForDistance - time needed for selected car to
+ * pass the distance required
+ * @param {*} animationSpeed - time of the animation for the slowest
+ * car
+ */
+const calculateCarAnimationTime = (slowestCar, carTimeForDistance, animationSpeed) => {
+  return (animationSpeed * carTimeForDistance) / slowestCar;
+}
