@@ -200,17 +200,48 @@ const startTrafficListener = () => {
 }
 
 /**
- * Handles click on start button
+ * Moves cars to the end of the road.
+ * Call function for comparing cars by speed.
+ * Displays winners of the race.
+ * 
  */
 $(document).on("click","#start",function() {
-  console.log("Race start");  
   selectedCars.forEach(car => {
     $('#race-car' + car.id).css({
       'float': 'right',
       'margin-right' : '20px'
     });
   });
+
+  selectedCars.sort(compareSpeed);
+  try {
+    $('#race-car' + selectedCars[selectedCars.length - 1].id).append("<h4>I</h4>");
+    $('#race-car' + selectedCars[selectedCars.length - 1].id).addClass('first-place');
+    $('#race-car' + selectedCars[selectedCars.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
+
+    $('#race-car' + selectedCars[selectedCars.length - 2].id).append("<h4>II</h4>");
+    $('#race-car' + selectedCars[selectedCars.length - 2].id).addClass('second-place');
+    $('#race-car' + selectedCars[selectedCars.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
+
+    $('#race-car' + selectedCars[selectedCars.length - 3].id).append("<h4>III</h4>");
+    $('#race-car' + selectedCars[selectedCars.length - 3].id).addClass('third-place');
+    $('#race-car' + selectedCars[selectedCars.length - 3].id + " .race-car-image").addClass('race-car-image-dark');
+  }
+  catch(err) {}
 });
+
+/**
+ * Compares list by speed attribute
+ * @param {*} a - first object for comparison
+ * @param {*} b - second object for comparison
+ */
+const compareSpeed = (a,b) => {
+  if (a.speed < b.speed)
+    return -1;
+  if (a.speed > b.speed)
+    return 1;
+  return 0;
+}
 
 /**
  * Checks if animation speed field is filled.

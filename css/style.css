@@ -172,9 +172,10 @@ h1 {
   display: block;
   background-size: cover;
   background-repeat: no-repeat;
-  max-width: 90%;
-  max-height: 90%; 
-  display: block;
+  width: 90%;
+  margin-left: 5%;
+  height: auto;
+  max-height: 125px;
   z-index: -1;
   position: absolute;
 }
@@ -260,4 +261,19 @@ h1 {
 }
 input:focus{
   outline: none;
+}
+.race-car-image-dark {
+  filter: brightness(20%);
+}
+.first-place {
+  text-align: center !important;
+  color: #FFD700 !important;
+}
+.second-place {
+  text-align: center !important;
+  color:	#C0C0C0 !important;
+}
+.third-place {
+  text-align: center !important;
+  color:	#cd7f32  !important;
 }
