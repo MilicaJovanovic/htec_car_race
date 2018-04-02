@@ -309,7 +309,7 @@ const startTrafficLogicListener = () => {
         const uiCar = $('#race-car' + car.id);
         const uiLight = $('#light' + light.position);
 
-        if (uiCar.position().left > (uiLight.position().left - 40)) {
+        if (uiCar.position().left > (uiLight.position().left - 30) && uiCar.position().left <= (uiLight.position().left)) {
           if (uiLight.hasClass("red-light") && !stop) {
             stop = true;
             $('#race-car' + car.id).css({
