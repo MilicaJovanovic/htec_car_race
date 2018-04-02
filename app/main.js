@@ -198,3 +198,22 @@ const startTrafficListener = () => {
     }, light.duration);
   });
 }
+
+/**
+ * Handles click on start button
+ */
+$(document).on("click","#start",function() {
+  console.log("Race start");  
+});
+
+/**
+ * Checks if animation speed field is filled.
+ * If field does not have content, start button is disabled.
+ * If field has content, the race can be started.
+ */
+$(document).ready(function(){
+  $('#start').prop('disabled', true);
+  $('#animation-speed').keyup(function() {
+      $('#start').prop('disabled', this.value == "" ? true : false);     
+  })
+});
