@@ -167,8 +167,6 @@ $(document).on("click",".flipcard",function() {
     lights.height = height;
   });
   generateTrafficLights(trafficLights, distance);
-
-  startTrafficListener();
 })
 
 /**
@@ -183,20 +181,6 @@ const generateTrafficLight = (trafficLight) => {
     (trafficLight).removeClass("green-light");
     $(trafficLight).addClass("red-light");
   }
-}
-
-/**
- * Starts an interval checking all traffic lights at
- * their exact duration. Calls function for checking
- * traffic light colors.
- */
-const startTrafficListener = () => {
-  trafficLights.forEach(light => {
-    setInterval(() => {
-      const uiLight = $('#light' + light.position);
-      generateTrafficLight(uiLight);
-    }, light.duration);
-  });
 }
 
 /**
@@ -220,10 +204,13 @@ $(document).on("click","#start",function() {
     const calculatedAnimationTime = calculateCarAnimationTime(slowestCar, calculateTimeForDistance(car.speed, distance), animationSpeed);
 
     $('#race-car' + car.id).css({
-      '-webklit-animation': 'move-car ' + calculatedAnimationTime + 's forwards',
+      '-webkit-animation': 'move-car ' + calculatedAnimationTime + 's forwards',
       'animation': 'move-car ' + calculatedAnimationTime + 's forwards',
       '-webkit-animation-timing-function': 'linear',
     });
+
+    startTrafficListener();
+    startTrafficLogicListener();
   });
 
   // selectedCars.sort(compareSpeed);
@@ -268,8 +255,6 @@ $(document).ready(function(){
   })
 });
 
-
-
 /**
  * Calculates how many minutes does a car need to pass the
  * distance acquired from JSON, depending on car speed.
@@ -295,4 +280,52 @@ const calculateTimeForDistance = (carSpeed, distance) => {
  */
 const calculateCarAnimationTime = (slowestCar, carTimeForDistance, animationSpeed) => {
   return (animationSpeed * carTimeForDistance) / slowestCar;
+}
+
+/**
+ * Starts an interval checking all traffic lights at
+ * their exact duration. Calls function for checking
+ * traffic light colors.
+ */
+const startTrafficListener = () => {
+  trafficLights.forEach(light => {
+    setInterval(() => {
+      const uiLight = $('#light' + light.position);
+      generateTrafficLight(uiLight);
+    }, light.duration);
+  });
+}
+
+/**
+ * Starts an interval checking if cars are at the traffic
+ * light when red light is on. If a car reaches red traffic light, it's animation
+ * must be stopped.
+ */
+const startTrafficLogicListener = () => {
+  setInterval(() => {
+    trafficLights.forEach(light => {
+      selectedCars.forEach(car => {
+        let stop = false;
+        const uiCar = $('#race-car' + car.id);
+        const uiLight = $('#light' + light.position);
+
+        if (uiCar.position().left > (uiLight.position().left - 40)) {
+          if (uiLight.hasClass("red-light") && !stop) {
+            stop = true;
+            $('#race-car' + car.id).css({
+              'animation-play-state' : 'paused'
+            });
+          }
+        }
+        setInterval(() => {
+          if (uiLight.hasClass('green-light') && stop) {
+            stop = true;
+            $('#race-car' + car.id).css({
+              'animation-play-state' : 'running'
+            });
+          }
+        }, 1000);
+      });
+    });
+  }, 1000);
 }
