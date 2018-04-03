@@ -209,6 +209,7 @@ $(document).on("click","#start",function() {
       '-webkit-animation-timing-function': 'linear',
     });
 
+    startSpeedListener(slowestCar, animationSpeed);
     startTrafficListener();
     startTrafficLogicListener();
   });
@@ -309,7 +310,7 @@ const startTrafficLogicListener = () => {
         const uiCar = $('#race-car' + car.id);
         const uiLight = $('#light' + light.position);
 
-        if (uiCar.position().left > (uiLight.position().left - 30) && uiCar.position().left <= (uiLight.position().left)) {
+        if (uiCar.position().left > (uiLight.position().left - 30) && uiCar.position().left <= (uiLight.position().left) + 20) {
           if (uiLight.hasClass("red-light") && !stop) {
             stop = true;
             $('#race-car' + car.id).css({
@@ -325,6 +326,37 @@ const startTrafficLogicListener = () => {
             });
           }
         }, 1000);
+      });
+    });
+  }, 1000);
+}
+
+/**
+ * Starts an interval checking if cars are at the speed
+ * limit sign. If a car reaches speed limit, it's animation
+ * speed must be appropriately adjusted.
+ * During speeda adjustment new css animation is created.
+ * @param {*} slowestCar - slowest car to compare new speed to
+ * @param {*} animationSpeed - animation speed that user
+ * entered
+ */
+const startSpeedListener = (slowestCar, animationSpeed) => {
+  setInterval(() => {
+    speedLimits.forEach(limit => {
+      selectedCars.forEach(car => {
+        const uiCar = $('#race-car' + car.id);
+        const uiLimit = $('#speed-limit' + limit.speed);
+  
+        if (uiCar.position().left > parseInt(uiLimit.css('margin-left'))) {
+          selectedCars.forEach(car => {
+            const calculatedAnimationTime = calculateCarAnimationTime(slowestCar, calculateTimeForDistance(limit.speed, distance), animationSpeed);
+            $('#race-car' + car.id).css({
+              '-webkit-animation': 'move-car ' + calculatedAnimationTime + 's forwards',
+              'animation': 'move-car ' + calculatedAnimationTime + 's forwards',
+              '-webkit-animation-timing-function': 'linear'
+            });
+          });
+        } 
       });
     });
   }, 1000);
