@@ -177,10 +177,10 @@ $(document).on("click",".flipcard",function() {
 const generateTrafficLight = (trafficLight) => {
   if(trafficLight.hasClass("red-light")) {
     (trafficLight).removeClass("red-light");
-    $(trafficLight).addClass("green-light");
+    (trafficLight).addClass("green-light");
   } else {
     (trafficLight).removeClass("green-light");
-    $(trafficLight).addClass("red-light");
+    (trafficLight).addClass("red-light");
   }
 }
 
@@ -209,13 +209,12 @@ $(document).on("click","#start",function() {
       'animation': 'move-car ' + calculatedAnimationTime + 's forwards',
       '-webkit-animation-timing-function': 'linear',
     });
-
-    startSpeedListener(slowestCar, animationSpeed);
-    startTrafficListener();
-    startTrafficLogicListener();
-
-    checkWinners();
   });
+
+  // startSpeedListener(slowestCar, animationSpeed);
+  startTrafficListener();
+  startTrafficLogicListener();
+  checkWinners();
 });
 
 /**
@@ -388,9 +387,7 @@ const checkWinners = () => {
             $('#race-car' + winners[2].id).addClass('third-place');
             $('#race-car' + winners[2].id + " .race-car-image").addClass('race-car-image-dark');
           }
-        } catch (err) {
-          throw new Error(err);
-        }
+        } catch (err) {}
       }
     });
   }, 500);
