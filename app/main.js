@@ -3,6 +3,7 @@ let selectedCars = [];
 let distance = 0;
 let speedLimits = [];
 let trafficLights = [];
+let winners = [];
 
 /*
  * Generates rows depending on cars number 
@@ -209,9 +210,11 @@ $(document).on("click","#start",function() {
       '-webkit-animation-timing-function': 'linear',
     });
 
-    startSpeedListener(slowestCar, animationSpeed);
-    startTrafficListener();
-    startTrafficLogicListener();
+    // startSpeedListener(slowestCar, animationSpeed);
+    // startTrafficListener();
+    // startTrafficLogicListener();
+
+    checkWinners();
   });
 
   // selectedCars.sort(compareSpeed);
@@ -361,3 +364,72 @@ const startSpeedListener = (slowestCar, animationSpeed) => {
     });
   }, 1000);
 }
+
+/**
+ * Starts an interval checking if cars are at the speed
+ * limit sign. If a car reaches speed limit, it's animation
+ * speed must be appropriately adjusted.
+ * During speeda adjustment new css animation is created.
+ * @param {*} slowestCar - slowest car to compare new speed to
+ * @param {*} animationSpeed - animation speed that user
+ * entered
+ */
+const checkWinners = () => {
+  const cheking = setInterval(() => {
+    selectedCars.forEach(car => {
+      const uiCar = $('#race-car' + car.id);
+      const uiEnd = $('#race-car-line' + car.id);
+      const raceEnd = uiEnd.offset().left + uiEnd.width();
+
+      if (uiCar.position().left > (raceEnd - raceEnd * 0.12)) {
+        const foundCar = winners.filter(winner => winner.id == car.id);
+        if (foundCar.length == 0) {
+          winners.push(car);
+        }
+
+        if (winners.length >= 3) {
+          if(!($('#race-car' + winners[winners.length - 1].id).hasClass('first-place'))) {
+            $('#race-car' + winners[winners.length - 1].id).append("<h4>I</h4>");
+            $('#race-car' + winners[winners.length - 1].id).addClass('first-place');
+            $('#race-car' + winners[winners.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
+          }
+
+          if(!($('#race-car' + winners[winners.length - 2].id).hasClass('second-place'))) {
+            $('#race-car' + winners[winners.length - 2].id).append("<h4>II</h4>");
+            $('#race-car' + winners[winners.length - 2].id).addClass('second-place');
+            $('#race-car' + winners[winners.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
+          }
+
+          if(!($('#race-car' + winners[winners.length - 3].id).hasClass('third-place'))) {
+            $('#race-car' + winners[winners.length - 3].id).append("<h4>III</h4>");
+            $('#race-car' + winners[winners.length - 3].id).addClass('third-place');
+            $('#race-car' + winners[winners.length - 3].id + " .race-car-image").addClass('race-car-image-dark');
+          }
+        } else if (winners.length == 2) {
+            if(!($('#race-car' + winners[winners.length - 1].id).hasClass('first-place'))) {
+              $('#race-car' + winners[winners.length - 1].id).append("<h4>I</h4>");
+              $('#race-car' + winners[winners.length - 1].id).addClass('first-place');
+              $('#race-car' + winners[winners.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
+            }
+
+            if(!($('#race-car' + winners[winners.length - 2].id).hasClass('second-place'))) {
+              $('#race-car' + winners[winners.length - 2].id).append("<h4>II</h4>");
+              $('#race-car' + winners[winners.length - 2].id).addClass('second-place');
+              $('#race-car' + winners[winners.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
+            }
+        } else {
+            if(!($('#race-car' + winners[winners.length - 1].id).hasClass('first-place'))) {
+              $('#race-car' + winners[winners.length - 1].id).append("<h4>I</h4>");
+              $('#race-car' + winners[winners.length - 1].id).addClass('first-place');
+              $('#race-car' + winners[winners.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
+            }
+        }
+      } 
+    });
+  }, 500);
+}
+
+// var refreshIntervalId = setInterval(fname, 10000);
+
+// /* later */
+// clearInterval(refreshIntervalId);
