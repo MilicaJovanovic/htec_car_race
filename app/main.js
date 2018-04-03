@@ -229,7 +229,7 @@ $(document).on("click","#start",function() {
     });
   });
 
-  // startSpeedListener(slowestCar, animationSpeed);
+  startSpeedListener(slowestCar, animationSpeed);
   startTrafficListener();
   startTrafficLogicListener();
   checkWinners();
@@ -345,25 +345,43 @@ const startTrafficLogicListener = () => {
  * entered
  */
 const startSpeedListener = (slowestCar, animationSpeed) => {
-  setInterval(() => {
-    speedLimits.forEach(limit => {
+  let count = 0;
+  speedLimits.forEach(limit => {
+    let speedInterval = setInterval(() => {
+      count++;
       selectedCars.forEach(car => {
         const uiCar = $('#race-car' + car.id);
         const uiLimit = $('#speed-limit' + limit.speed);
   
         if (uiCar.position().left > parseInt(uiLimit.css('margin-left'))) {
-          selectedCars.forEach(car => {
             const calculatedAnimationTime = calculateCarAnimationTime(slowestCar, calculateTimeForDistance(limit.speed, distance), animationSpeed);
+            var css = '@keyframes move' + car.id + "-" + count + ' {0% {left: ' + uiCar.position().left + 'px;top: 0px;-webkit-transform: rotate(0deg)}100% {left: 100%;top: 0px; margin-left: -8%;-webkit-transform: rotate(0deg)}}';
+            head = document.getElementsByTagName('head')[0],
+            style = document.createElement('style');
+
+            style.type = 'text/css';
+            if (style.styleSheet){
+              style.styleSheet.cssText = css;
+            } else {
+              style.appendChild(document.createTextNode(css));
+            }
+
+            head.appendChild(style);
+
             $('#race-car' + car.id).css({
-              '-webkit-animation': 'move-car ' + calculatedAnimationTime + 's forwards',
-              'animation': 'move-car ' + calculatedAnimationTime + 's forwards',
+              'animation-play-state' : 'paused'
+            });
+
+            $('#race-car' + car.id).css({
+              '-webkit-animation': 'move' + car.id + "-" + count +  ' ' + calculatedAnimationTime + 's forwards',
+              'animation': 'move' + car.id + "-" + count + ' ' + calculatedAnimationTime + 's forwards',
               '-webkit-animation-timing-function': 'linear'
             });
-          });
-        } 
+            clearInterval(speedInterval);
+        }
       });
-    });
-  }, 1000);
+    }, 1000);
+  });
 }
 
 /**
