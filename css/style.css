@@ -27,6 +27,7 @@ h1 {
 .round-square p {
   color: #A4A4A4;
   font-weight: bold;
+  font-size: 0.9em;
 }
 .car-image {
   display: block;
@@ -80,14 +81,14 @@ h1 {
   display: block;
 }
 .flipcard.flipped .front {
-  display:none;
+  display: none;
 }
 .flipcard .back {
   -webkit-transform: rotateX(180deg);
   transform: rotateX(180deg);
   -moz-transform: rotateX(180deg);
   display: none;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 .flipcard.flipped .back {
   display: block;
@@ -289,5 +290,10 @@ input:focus{
     top: 0px; 
     margin-left: -8%; 
     -webkit-transform: rotate(0deg)
+  }
+}
+@media only screen and (max-width: 960px) {
+  .round-square p {
+    font-size: 0.8em;
   }
 }
