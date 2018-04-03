@@ -210,28 +210,12 @@ $(document).on("click","#start",function() {
       '-webkit-animation-timing-function': 'linear',
     });
 
-    // startSpeedListener(slowestCar, animationSpeed);
-    // startTrafficListener();
-    // startTrafficLogicListener();
+    startSpeedListener(slowestCar, animationSpeed);
+    startTrafficListener();
+    startTrafficLogicListener();
 
     checkWinners();
   });
-
-  // selectedCars.sort(compareSpeed);
-  // try {
-  //   $('#race-car' + selectedCars[selectedCars.length - 1].id).append("<h4>I</h4>");
-  //   $('#race-car' + selectedCars[selectedCars.length - 1].id).addClass('first-place');
-  //   $('#race-car' + selectedCars[selectedCars.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
-
-  //   $('#race-car' + selectedCars[selectedCars.length - 2].id).append("<h4>II</h4>");
-  //   $('#race-car' + selectedCars[selectedCars.length - 2].id).addClass('second-place');
-  //   $('#race-car' + selectedCars[selectedCars.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
-
-  //   $('#race-car' + selectedCars[selectedCars.length - 3].id).append("<h4>III</h4>");
-  //   $('#race-car' + selectedCars[selectedCars.length - 3].id).addClass('third-place');
-  //   $('#race-car' + selectedCars[selectedCars.length - 3].id + " .race-car-image").addClass('race-car-image-dark');
-  // }
-  // catch(err) { throw new Error(err)}
 });
 
 /**
@@ -366,13 +350,10 @@ const startSpeedListener = (slowestCar, animationSpeed) => {
 }
 
 /**
- * Starts an interval checking if cars are at the speed
- * limit sign. If a car reaches speed limit, it's animation
- * speed must be appropriately adjusted.
- * During speeda adjustment new css animation is created.
- * @param {*} slowestCar - slowest car to compare new speed to
- * @param {*} animationSpeed - animation speed that user
- * entered
+ * Interval check when cars hit the end of the road.
+ * It adds cars to the winner list.
+ * After all cars are at the end, CSS of the elements changes
+ * to show first three places.
  */
 const checkWinners = () => {
   const cheking = setInterval(() => {
@@ -386,50 +367,31 @@ const checkWinners = () => {
         if (foundCar.length == 0) {
           winners.push(car);
         }
-
-        if (winners.length >= 3) {
-          if(!($('#race-car' + winners[winners.length - 1].id).hasClass('first-place'))) {
-            $('#race-car' + winners[winners.length - 1].id).append("<h4>I</h4>");
-            $('#race-car' + winners[winners.length - 1].id).addClass('first-place');
-            $('#race-car' + winners[winners.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
-          }
-
-          if(!($('#race-car' + winners[winners.length - 2].id).hasClass('second-place'))) {
-            $('#race-car' + winners[winners.length - 2].id).append("<h4>II</h4>");
-            $('#race-car' + winners[winners.length - 2].id).addClass('second-place');
-            $('#race-car' + winners[winners.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
-          }
-
-          if(!($('#race-car' + winners[winners.length - 3].id).hasClass('third-place'))) {
-            $('#race-car' + winners[winners.length - 3].id).append("<h4>III</h4>");
-            $('#race-car' + winners[winners.length - 3].id).addClass('third-place');
-            $('#race-car' + winners[winners.length - 3].id + " .race-car-image").addClass('race-car-image-dark');
-          }
-        } else if (winners.length == 2) {
-            if(!($('#race-car' + winners[winners.length - 1].id).hasClass('first-place'))) {
-              $('#race-car' + winners[winners.length - 1].id).append("<h4>I</h4>");
-              $('#race-car' + winners[winners.length - 1].id).addClass('first-place');
-              $('#race-car' + winners[winners.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
-            }
-
-            if(!($('#race-car' + winners[winners.length - 2].id).hasClass('second-place'))) {
-              $('#race-car' + winners[winners.length - 2].id).append("<h4>II</h4>");
-              $('#race-car' + winners[winners.length - 2].id).addClass('second-place');
-              $('#race-car' + winners[winners.length - 2].id + " .race-car-image").addClass('race-car-image-dark');
-            }
-        } else {
-            if(!($('#race-car' + winners[winners.length - 1].id).hasClass('first-place'))) {
-              $('#race-car' + winners[winners.length - 1].id).append("<h4>I</h4>");
-              $('#race-car' + winners[winners.length - 1].id).addClass('first-place');
-              $('#race-car' + winners[winners.length - 1].id + " .race-car-image").addClass('race-car-image-dark');
-            }
-        }
       } 
+
+      if (winners.length == selectedCars.length) {
+        try {
+          if(!($('#race-car' + winners[0].id).hasClass('first-place'))) {
+            $('#race-car' + winners[0].id).append("<h4>I</h4>");
+            $('#race-car' + winners[0].id).addClass('first-place');
+            $('#race-car' + winners[0].id + " .race-car-image").addClass('race-car-image-dark');
+          }
+    
+          if(!($('#race-car' + winners[1].id).hasClass('second-place'))) {
+            $('#race-car' + winners[1].id).append("<h4>II</h4>");
+            $('#race-car' + winners[1].id).addClass('second-place');
+            $('#race-car' + winners[1].id + " .race-car-image").addClass('race-car-image-dark');
+          }
+
+          if(!($('#race-car' + winners[2].id).hasClass('third-place'))) {
+            $('#race-car' + winners[2].id).append("<h4>III</h4>");
+            $('#race-car' + winners[2].id).addClass('third-place');
+            $('#race-car' + winners[2].id + " .race-car-image").addClass('race-car-image-dark');
+          }
+        } catch (err) {
+          throw new Error(err);
+        }
+      }
     });
   }, 500);
 }
-
-// var refreshIntervalId = setInterval(fname, 10000);
-
-// /* later */
-// clearInterval(refreshIntervalId);
