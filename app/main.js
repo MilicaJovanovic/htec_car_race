@@ -5,8 +5,10 @@ let speedLimits = [];
 let trafficLights = [];
 let winners = [];
 
-/*
- * Generates rows depending on cars number 
+/**
+ * Generates rows depending on cars number.
+ * Calculates needed rows and use template for generating.
+ * @param {*} carsNumber - number of cars loaded from JSON
  */
 const generateRow = (carsNumber) => {
   const rowsNumber = Math.ceil(carsNumber/3);
@@ -20,10 +22,13 @@ const generateRow = (carsNumber) => {
   }
 }
 
-/*
- * Generates cars defined in JSON 
+/**
+ * Generates cars using template.
+ * Calculates row and places car in it.
+ * @param {*} carsNumber - number of cars loaded from JSON
+ * @param {*} cars - array with all cars loaded from JSON
  */
-const generateCar = (carsNumber, cars) => {
+const generateCars = (carsNumber, cars) => {
   for(let i = 0; i < carsNumber; i++) {
     const currentRowNumber = Math.ceil((i+1)/3);
     const currentRowId = "#row" + currentRowNumber;
@@ -33,8 +38,9 @@ const generateCar = (carsNumber, cars) => {
   }
 }
 
-/*
- * Generates empty lines on road
+/**
+ * Generates lines from every selected car using template.
+ * @param {*} carsNumber - number of selected cars
  */
 const generateRoadLine = (carsNumber) => {
   $('#lanes').empty();
@@ -45,8 +51,9 @@ const generateRoadLine = (carsNumber) => {
   }
 }
 
-/*
- * Generates race cars on the start of the road
+/**
+ * Generates cars for racing using template.
+ * @param {*} cars - array with all selected cars
  */
 const generateRaceCar = (cars) => {
   $('#race-cars').empty();
@@ -57,8 +64,12 @@ const generateRaceCar = (cars) => {
   }
 }
 
-/*
- * Generates speed limit sign
+/**
+ * Generates speed limit signs using specific template.
+ * Calculates position for every sign depending of the position
+ * in JSON and with of the HTML element where sign is placed.
+ * @param {*} speedLimits - all speed limit signs from JSON
+ * @param {*} distance - road distance
  */
 const generateSpeedLimitSign = (speedLimits, distance) => {
   $("#signs").html("");
@@ -71,8 +82,12 @@ const generateSpeedLimitSign = (speedLimits, distance) => {
   }
 }
 
-/*
- * Generates traffic lights
+/**
+ * Generates traffic lights using specific template.
+ * Calculates position depending of the position
+ * in JSON and with of the HTML element where sign is placed.
+ * @param {*} trafficLights - all traffic lights from JSON
+ * @param {*} distance - road distance
  */
 const generateTrafficLights = (trafficLights, distance) => {
   for (let i = 0; i < trafficLights.length; i++) {
@@ -84,9 +99,9 @@ const generateTrafficLights = (trafficLights, distance) => {
   }
 }
 
-/*
- * Loads data from API
- * Generates content 
+/**
+ * Loads data from local JSON file.
+ * Generates content using above functions.
  */
 const loadJSON = _ => {
   fetch('../json/data.json')
@@ -96,9 +111,9 @@ const loadJSON = _ => {
       allCars = data.cars;
       const carsNumber = data.cars.length;
       generateRow(carsNumber);
-      generateCar(carsNumber, data.cars);   
+      generateCars(carsNumber, data.cars);   
       
-      // Generates road for race
+      // Generating road for race
       distance = data.distance;
       const distancePart = distance / 10;
       const roadHeader = {
@@ -125,8 +140,9 @@ const loadJSON = _ => {
 
 loadJSON()
 
-/*
- * Event that handles flipcard rotation
+/**
+ * Handles mouse enter on cards with car details.
+ * Adds and removes class depending on card state.
  */
 $(document).on("mouseenter",".flipcard",function() {
   var $flipcard = $(this); 
@@ -137,8 +153,11 @@ $(document).on("mouseenter",".flipcard",function() {
   }
 })
 
-/*
- * Event that adds selected car to the list for racing
+/**
+ * Handles mouse click on cards with car details.
+ * Adds and removes clicked car to the array of selected cars.
+ * Calls functions for generating road lines and race cars. 
+ * Calls functions for generating speed limit signs and traffic lights.
  */
 $(document).on("click",".flipcard",function() {
   const wholeId = this.id;
@@ -188,7 +207,6 @@ const generateTrafficLight = (trafficLight) => {
  * Moves cars to the end of the road.
  * Call function for comparing cars by speed.
  * Displays winners of the race.
- * 
  */
 $(document).on("click","#start",function() {
   const animationSpeed = $("#animation-speed").val();
