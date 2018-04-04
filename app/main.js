@@ -428,3 +428,15 @@ const checkWinners = () => {
     });
   }, 500);
 }
+
+$(document).on("keyup","#search-input",function() {
+  const userInput = $('#search-input').val();
+  
+  const filteredCars = allCars.filter(car => {
+    return car.name.toLowerCase().includes(userInput.toLowerCase()) || car.speed == parseInt(userInput);
+  });
+
+  $('#cars').empty();
+  generateRow(filteredCars.length);
+  generateCars(filteredCars.length, filteredCars);
+});
