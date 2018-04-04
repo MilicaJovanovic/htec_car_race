@@ -329,10 +329,10 @@ const startTrafficLogicListener = () => {
               'animation-play-state' : 'running'
             });
           }
-        }, 1000);
+        }, 500);
       });
     });
-  }, 1000);
+  }, 500);
 }
 
 /**
@@ -380,7 +380,7 @@ const startSpeedListener = (slowestCar, animationSpeed) => {
             clearInterval(speedInterval);
         }
       });
-    }, 1000);
+    }, 500);
   });
 }
 
